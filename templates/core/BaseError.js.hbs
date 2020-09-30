@@ -1,0 +1,112 @@
+qx.Class.define('{{baseNamespace}}.core.BaseError', {
+  extend: Error,
+  construct: function (message, code, method) {
+    this.setMessage(message){{lineEnd}}
+    this.setCode(code){{lineEnd}}
+    this.setMethod(method){{lineEnd}}
+  },
+
+  properties: {
+    message: {
+      check: 'String',
+      init: '',
+      nullable: false
+    },
+    code: {
+      check: 'Integer',
+      init: -1,
+      nullable: false
+    },
+    method: {
+      check: 'String',
+      init: '',
+      nullable: true
+    }
+  },
+
+  members: {
+    /**
+     * getCodeMessage returns the message of the error code.
+     * * @returns {String}
+     */
+    getCodeMessage: function() {
+      return proto.core.BaseError.getMessageFromCode(this.getCode()){{lineEnd}}
+    },
+
+    /**
+     * asString gives all information of the error as string.
+     * @returns {String}
+     */
+    asString: function() {
+      return 'method: ' + this.getMethod() + ' code: ' + this.getCode() + ' message: \'' + this.getMessage() + '\''{{lineEnd}}
+    }
+  },
+
+  statics: {
+    codes: {
+      // https://github.com/grpc/grpc/blob/master/doc/statuscodes.md
+      OK: 0,
+      CANCELED: 1,
+      UNKNOWN: 2,
+      INVALID_ARGUMENT: 3,
+      DEADLINE_EXCEEDED: 4,
+      NOT_FOUND: 5,
+      ALREADY_EXISTS: 6,
+      PERMISSION_DENIED: 7,
+      RESOURCE_EXHAUSTED: 8,
+      FAILED_PRECONDITION: 9,
+      ABORTED: 10,
+      OUT_OF_RANGE: 11,
+      UNIMPLEMENTED: 12,
+      INTERNAL: 13,
+      UNAVAILABLE: 14,
+      DATA_LOSS: 15,
+      UNAUTHENTICATED: 16
+    },
+
+    /**
+     * getMessageFromCode returns the message of the given error code.
+     * @param code {Integer}
+     */
+    getMessageFromCode: function(code) {
+      switch (code) {
+        case 0:
+          return 'Ok'{{lineEnd}}
+        case 1:
+          return 'Canceled'{{lineEnd}}
+        case 2:
+          return 'Unkown'{{lineEnd}}
+        case 3:
+          return 'Invalid argument'{{lineEnd}}
+        case 4:
+          return 'Deadline exceeded'{{lineEnd}}
+        case 5:
+          return 'Not found'{{lineEnd}}
+        case 6:
+          return 'Already exists'{{lineEnd}}
+        case 7:
+          return 'Permission denied'{{lineEnd}}
+        case 8:
+          return 'Resource exhausted'{{lineEnd}}
+        case 9:
+          return 'Failed precondition'{{lineEnd}}
+        case 10:
+          return 'Aborted'{{lineEnd}}
+        case 11:
+          return 'Out of range'{{lineEnd}}
+        case 12:
+          return 'Unimplemented'{{lineEnd}}
+        case 13:
+          return 'Internal'{{lineEnd}}
+        case 14:
+          return 'Unavailable'{{lineEnd}}
+        case 15:
+          return 'Data loss'{{lineEnd}}
+        case 16:
+          return 'Unauthenticated'{{lineEnd}}
+        default:
+          return 'Unkown error'{{lineEnd}}
+      }
+    }
+  }
+}){{lineEnd}}
