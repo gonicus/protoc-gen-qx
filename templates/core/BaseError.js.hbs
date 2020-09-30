@@ -46,7 +46,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseError', {
     codes: {
       // https://github.com/grpc/grpc/blob/master/doc/statuscodes.md
       OK: 0,
-      CANCELLED: 1,
+      CANCELED: 1,
       UNKNOWN: 2,
       INVALID_ARGUMENT: 3,
       DEADLINE_EXCEEDED: 4,
@@ -73,7 +73,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseError', {
         case 0:
           return 'Ok'{{lineEnd}}
         case 1:
-          return 'Cancelled'{{lineEnd}}
+          return 'Canceled'{{lineEnd}}
         case 2:
           return 'Unkown'{{lineEnd}}
         case 3:
