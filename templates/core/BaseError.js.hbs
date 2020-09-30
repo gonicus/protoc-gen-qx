@@ -1,6 +1,18 @@
 qx.Class.define('{{baseNamespace}}.core.BaseError', {
   extend: Error,
   construct: function (message, code, method) {
+    if (!message) {
+      message = ""{{lineEnd}}
+    }
+
+    if (!code) {
+      code = -1{{lineEnd}}
+    }
+
+    if (!method) {
+      method = ""{{lineEnd}}
+    }
+
     this.setMessage(message){{lineEnd}}
     this.setCode(code){{lineEnd}}
     this.setMethod(method){{lineEnd}}
@@ -20,7 +32,6 @@ qx.Class.define('{{baseNamespace}}.core.BaseError', {
     method: {
       check: 'String',
       init: '',
-      nullable: true
     }
   },
 
