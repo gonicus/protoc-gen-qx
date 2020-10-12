@@ -86,7 +86,9 @@ CodeGeneratorRequest()
 
     if (config.get('embed') !== true) {
       const manifest = merge({
-        info: {},
+        info: {
+          version: '1.0.0'
+        },
         provides: {
           namespace: baseNamespace,
           encoding: "utf-8",
