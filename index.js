@@ -94,7 +94,7 @@ CodeGeneratorRequest()
           encoding: "utf-8",
           class: sourceDir + "class",
           resource: sourceDir + "resource",
-          type: "library"
+          // type: "library"
         }
       }, config.get('manifest'))
       if (external.length > 0) {
