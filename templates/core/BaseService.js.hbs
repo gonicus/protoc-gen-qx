@@ -110,7 +110,8 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
         metadata: this.__metadata
         // debug: qx.core.Environment.get('qx.debug')
       }{{lineEnd}}
-      var context = self = this{{lineEnd}}
+      var context, self;
+      context = self = this{{lineEnd}}
       if (typeof args[args.length - 1] === 'object') {
         context = args.pop(){{lineEnd}}
       }
