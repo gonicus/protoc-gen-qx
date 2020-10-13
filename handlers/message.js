@@ -22,7 +22,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       baseNamespace: baseNamespace,
       lineEnd: lineEnd
     })
-  
+
     return [{
       namespace: classNamespace,
       code: code
@@ -32,6 +32,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   // all the information needed to generate the code
   const context = {
     requirements: [],
+    ignores: [],
     includes: config.getIncludes('messageType', classNamespace).slice(),
     implements: config.getImplements('messageType', classNamespace).slice(),
     constructor: [],
@@ -111,7 +112,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         }
       } else if (prop.type === 11) {
         // reference
-        
+
         // check if reference is to a nestedType
         const completeType = `${baseNamespace}${prop.typeName}`
         if (completeType.startsWith(classNamespace + '.')) {
@@ -122,13 +123,13 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
           const nestedType = messageType.nestedTypeList.find(nType => nType.name === nestedTypeName);
 
           prop.typeName = prop.typeName.replace(`.${className}.`, `.${className.substring(0, 1).toLowerCase()}${className.substring(1)}.`)
-          
+
           // check if this is a map type
           isMap = nestedType && nestedType.options && nestedType.options.mapEntry === true
           if (isMap) {
             context.members.push(`/**
      * Get ${prop.name} map entry by key.
-     * 
+     *
      * @param key {String} map key
      * @returns {var|null} map value if the key exists in the map
      */
@@ -137,10 +138,10 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         return mapEntry.getKey() === key${lineEnd}
       }, this)${lineEnd}
     },
-    
+
     /**
      * Set ${prop.name} map entry value by key. If the entry does not exists yet, it will be added.
-     * 
+     *
      * @param key {String} map key
      * @param value {var} value to set
      */
@@ -153,10 +154,10 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         this.get${upperCase}().push(new ${baseNamespace}${prop.typeName}({key: key, value: value}))${lineEnd}
       }
     },
-    
+
     /**
      * Delete ${prop.name} map entry by key.
-     * 
+     *
      * @param key {String} map key
      */
     reset${upperCase}ByKey: function (key) {
@@ -166,7 +167,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       }
     }`)
           }
-          
+
           // add to requirements
           context.requirements.push(`@require(${baseNamespace}${prop.typeName})`)
         }
@@ -179,6 +180,8 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         } else if (prop.typeName === '.google.protobuf.Any') {
           // add requirement
           context.requirements.push(`@require(${baseNamespace}${prop.typeName})`)
+          // add ignores
+          context.ignores.push(`@ignore(${baseNamespace}${prop.typeName}.*)`)
         }
         propertyDefinition.type = {
           qxType: `${qxType}`,
@@ -373,7 +376,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       } else {
         this.set${firstUp}(name)${lineEnd}
       }
-      
+
       var oldValue = old${lineEnd}
       // reset all other values
       ${classNamespace}.ONEOFS[${index}].forEach(function (prop) {
@@ -443,7 +446,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   }
 
   const code = template({
-    classComment: getClassComment(messageType, s, proto, 4, context.requirements),
+    classComment: getClassComment(messageType, s, proto, 4, context.requirements, context.ignores),
     classNamespace: classNamespace,
     initCode: initCode,
     constructorCode: context.constructor,
