@@ -323,11 +323,11 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       } else {
         if (propertyDefinition.type.pbType === "Float" && config.get('floatDigits') !== 0) {
           propertyDefinition.deserializer.push(`case ${prop.number}:
-          value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
-          var factor = Math.pow(10, ${config.get('floatDigits')})${lineEnd}
-          value = Math.round(value * factor) / factor${lineEnd}
-          msg.set${upperCase}(value)${lineEnd}
-          break${lineEnd}`)
+            value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
+            var factor = Math.pow(10, ${config.get('floatDigits')})${lineEnd}
+            value = Math.round(value * factor) / factor${lineEnd}
+            msg.set${upperCase}(value)${lineEnd}
+            break${lineEnd}`)
         } else {
           propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
