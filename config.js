@@ -5,7 +5,7 @@ const merge = require('lodash.merge')
 const defaultConfig = {
   baseNamespace: 'proto',
   embed: false, // generate extra library with Manifest.json or embed into existing sources (no Manifest generation)
-  sourceDir: 'source', 
+  sourceDir: 'source',
   skipCoreFiles: false, // do not generate the .core.* files
   messageType: {
     '*': {
@@ -46,7 +46,9 @@ const defaultConfig = {
   manifest: {},
   whitelist: {},
   // convert local date object to UTC by adding/subtracting the timezone offset before converting from/to string
-  useUTC: false
+  useUTC: false,
+  // float decimal place accuracy
+  floatDigits: 0
 }
 
 class Config {

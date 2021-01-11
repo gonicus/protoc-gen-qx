@@ -292,21 +292,48 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     } else if (propertyDefinition.type.pbType) {
       if (list) {
         if (propertyDefinition.type.packed) {
-          propertyDefinition.deserializer.push(`case ${prop.number}:
+          if (propertyDefinition.type.pbType === "Float" && config.get('floatDigits') !== 0) {
+            propertyDefinition.deserializer.push(`case ${prop.number}:
+            value = reader.readPacked${propertyDefinition.type.pbType}()${lineEnd}
+            var factor = Math.pow(10, ${config.get('floatDigits')})${lineEnd}
+            value = Math.round(value * factor) / factor${lineEnd}
+            msg.get${upperCase}().replace(value)${lineEnd}
+            break${lineEnd}`)
+          } else {
+            propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.readPacked${propertyDefinition.type.pbType}()${lineEnd}
             msg.get${upperCase}().replace(value)${lineEnd}
             break${lineEnd}`)
+          }
         } else {
-          propertyDefinition.deserializer.push(`case ${prop.number}:
+          if (propertyDefinition.type.pbType === "Float" && config.get('floatDigits') !== 0) {
+            propertyDefinition.deserializer.push(`case ${prop.number}:
+            value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
+            var factor = Math.pow(10, ${config.get('floatDigits')})${lineEnd}
+            value = Math.round(value * factor) / factor${lineEnd}
+            msg.get${upperCase}().push(value)${lineEnd}
+            break${lineEnd}`)
+          } else {
+            propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
             msg.get${upperCase}().push(value)${lineEnd}
             break${lineEnd}`)
+          }
         }
       } else {
-        propertyDefinition.deserializer.push(`case ${prop.number}:
+        if (propertyDefinition.type.pbType === "Float" && config.get('floatDigits') !== 0) {
+          propertyDefinition.deserializer.push(`case ${prop.number}:
+          value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
+          var factor = Math.pow(10, ${config.get('floatDigits')})${lineEnd}
+          value = Math.round(value * factor) / factor${lineEnd}
+          msg.set${upperCase}(value)${lineEnd}
+          break${lineEnd}`)
+        } else {
+          propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
             msg.set${upperCase}(value)${lineEnd}
             break${lineEnd}`)
+        }
       }
     }
   })
