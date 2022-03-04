@@ -10,6 +10,11 @@ const template = handlebars.compile(fs.readFileSync(path.join(__dirname, '..', '
 handlebars.registerHelper('curly', function(object, open) {
   return open ? '{' : '}';
 });
+handlebars.registerHelper('camel', function(object) {
+  return object.replace(/([-_][a-z])/ig, ($1) => {
+    return $1.toUpperCase().replace("-", "").replace("_", "");
+  });
+});
 const {setPropEntry} = require('../utils')
 const arrayClass = config.get('repeatedClass')
 const optionHandler = require('./options/index')
