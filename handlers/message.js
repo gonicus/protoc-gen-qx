@@ -12,7 +12,7 @@ handlebars.registerHelper('curly', function(object, open) {
 });
 handlebars.registerHelper('camel', function(object) {
   return object.replace(/([-_][a-z])/ig, ($1) => {
-    return $1.toUpperCase().replace("-", "").replace("_", "");
+    return $1.toUpperCase().replace('-', '').replace('_', '');
   });
 });
 const {setPropEntry} = require('../utils')
