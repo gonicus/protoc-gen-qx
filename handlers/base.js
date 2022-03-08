@@ -9,7 +9,9 @@ const getClassComment = (item, s, proto, commentPos, requirements) => {
 ${normalizeComments(findCommentByPath([commentPos, s], proto.sourceCodeInfo.locationList), 1)}
  * ${item.name} class generated from protobuf definition "${proto.name}".
  * auto-generated code PLEASE DO NOT EDIT!
- * ${requirements ? requirements.join('\n * ') : ''}
+ *
+ * @ignore proto.google.protobuf
+ * ${requirements ? '\n * ' + requirements.join('\n * ') : ''}
  */`
 }
 
