@@ -10,10 +10,14 @@ const template = handlebars.compile(fs.readFileSync(path.join(__dirname, '..', '
 handlebars.registerHelper('curly', function(object, open) {
   return open ? '{' : '}';
 });
-function camelCase(object) {
-  return object.replace(/([-_][a-z])/ig, ($1) => {
+function camelCase(object, capFirst) {
+  let ret = object.replace(/([-_][a-z])/ig, ($1) => {
     return $1.toUpperCase().replace('-', '').replace('_', '');
   });
+  if (capFirst) {
+    ret = ret.substr(0, 1).toUpperCase() + ret.substr(1)
+  }
+  return ret;
 }
 handlebars.registerHelper('camel', camelCase);
 const {setPropEntry} = require('../utils')
@@ -69,7 +73,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     }`)
   })
   messageType.oneofDeclList.forEach((prop, i) => {
-    let camelCaseProp = camelCase(prop.name)
+    let camelCaseProp = camelCase(prop.name, true)
     context.oneOfs.push(Object.assign({
       types: [],
       refs: [],
