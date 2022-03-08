@@ -98,7 +98,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       propertyDefinition.writerTransform += `
       ${propertyDefinition.type.writerTransform}${lineEnd}`
     }
-    let camelCaseProp = camelCase(prop.name)
+    let camelCaseProp = camelCase(prop.name, true)
     let isMap = false
     if (!propertyDefinition.type && prop.typeName) {
       // reference to another proto message
