@@ -10,9 +10,7 @@ ${normalizeComments(findCommentByPath([commentPos, s], proto.sourceCodeInfo.loca
  * ${item.name} class generated from protobuf definition "${proto.name}".
  * auto-generated code PLEASE DO NOT EDIT!
  *
- * @ignore grpc
- * @ignore jspb
- * @ignore proto.google.protobuf
+ * @ignore(grpc, jspb, proto.google.protobuf)
  * ${requirements ? '\n * ' + requirements.join('\n * ') : ''}
  */`
 }
