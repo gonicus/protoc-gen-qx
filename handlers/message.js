@@ -10,11 +10,12 @@ const template = handlebars.compile(fs.readFileSync(path.join(__dirname, '..', '
 handlebars.registerHelper('curly', function(object, open) {
   return open ? '{' : '}';
 });
-handlebars.registerHelper('camel', function(object) {
+function camelCase(object) {
   return object.replace(/([-_][a-z])/ig, ($1) => {
     return $1.toUpperCase().replace('-', '').replace('_', '');
   });
-});
+}
+handlebars.registerHelper('camel', camelCase);
 const {setPropEntry} = require('../utils')
 const arrayClass = config.get('repeatedClass')
 const optionHandler = require('./options/index')
@@ -68,13 +69,12 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     }`)
   })
   messageType.oneofDeclList.forEach((prop, i) => {
-    let upperCase = prop.name.substring(0, 1).toUpperCase() + prop.name.substring(1)
-    const index = context.oneOfs.length
+    let camelCaseProp = camelCase(prop.name)
     context.oneOfs.push(Object.assign({
       types: [],
       refs: [],
       names: [],
-      event: `change${upperCase}`
+      event: `change${camelCaseProp}`
     }, prop))
   })
 
@@ -89,12 +89,12 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       type: typeMap[prop.type] ? Object.assign({}, typeMap[prop.type]) : null,
       writerTransform: ''
     }
-    // add writer tronform from type definition
+    // add writer transform from type definition
     if (propertyDefinition.type && propertyDefinition.type.writerTransform) {
       propertyDefinition.writerTransform += `
       ${propertyDefinition.type.writerTransform}${lineEnd}`
     }
-    let upperCase = prop.name.substring(0, 1).toUpperCase() + prop.name.substring(1)
+    let camelCaseProp = camelCase(prop.name)
     let isMap = false
     if (!propertyDefinition.type && prop.typeName) {
       // reference to another proto message
@@ -137,8 +137,8 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * @param key {String} map key
      * @returns {var|null} map value if the key exists in the map
      */
-    get${upperCase}ByKey: function (key) {
-      return this.get${upperCase}().toArray().find(function (mapEntry) {
+    get${camelCaseProp}ByKey: function (key) {
+      return this.get${camelCaseProp}().toArray().find(function (mapEntry) {
         return mapEntry.getKey() === key${lineEnd}
       }, this)${lineEnd}
     },
@@ -149,13 +149,13 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * @param key {String} map key
      * @param value {var} value to set
      */
-    set${upperCase}ByKey: function (key, value) {
-      var entry = this.get${upperCase}ByKey(key)${lineEnd}
+    set${camelCaseProp}ByKey: function (key, value) {
+      var entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
       if (entry) {
         entry.setValue(value);
       } else {
         // add new entry
-        this.get${upperCase}().push(new ${baseNamespace}${prop.typeName}({key: key, value: value}))${lineEnd}
+        this.get${camelCaseProp}().push(new ${baseNamespace}${prop.typeName}({key: key, value: value}))${lineEnd}
       }
     },
     
@@ -164,10 +164,10 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * 
      * @param key {String} map key
      */
-    reset${upperCase}ByKey: function (key) {
-      var entry = this.get${upperCase}ByKey(key)${lineEnd}
+    reset${camelCaseProp}ByKey: function (key) {
+      var entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
       if (entry) {
-        this.get${upperCase}().remove(entry);
+        this.get${camelCaseProp}().remove(entry);
       }
     }`)
           }
@@ -190,20 +190,20 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
           readerCode: list ? `case ${prop.number}:
             value = new ${baseNamespace}${prop.typeName}()${lineEnd}
             reader.readMessage(value, ${baseNamespace}${prop.typeName}.deserializeBinaryFromReader)${lineEnd}
-            msg.get${upperCase}().push(value)${lineEnd}
+            msg.get${camelCaseProp}().push(value)${lineEnd}
             break${lineEnd}` : `case ${prop.number}:
             value = new ${baseNamespace}${prop.typeName}()${lineEnd}
             reader.readMessage(value, ${baseNamespace}${prop.typeName}.deserializeBinaryFromReader)${lineEnd}
-            msg.set${upperCase}(value)${lineEnd}
+            msg.set${camelCaseProp}(value)${lineEnd}
             break${lineEnd}`,
-          writerCode: list ? `f = message.get${upperCase}().toArray()${lineEnd}
+          writerCode: list ? `f = message.get${camelCaseProp}().toArray()${lineEnd}
       if (f != null) {
         writer.writeRepeatedMessage(
           ${prop.number},
           f,
           ${baseNamespace}${prop.typeName}.serializeBinaryToWriter
         )${lineEnd}
-      }` : `f = message.get${upperCase}()${lineEnd}${propertyDefinition.writerTransform}
+      }` : `f = message.get${camelCaseProp}()${lineEnd}${propertyDefinition.writerTransform}
       if (f != null) {
         writer.writeMessage(
           ${prop.number},
@@ -233,15 +233,15 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       propertyDefinition.entries = propertyDefinition.entries.concat([
           {key: 'check', value: `'${arrayClass}'`},
           {key: 'deferredInit', value: true},
-          {key: 'event', value: `'change${upperCase}'`}
+          {key: 'event', value: `'change${camelCaseProp}'`}
       ])
-      context.constructor.push(`this.init${upperCase}(new ${arrayClass}())${lineEnd}`)
+      context.constructor.push(`this.init${camelCaseProp}(new ${arrayClass}())${lineEnd}`)
     } else {
       propertyDefinition.entries = propertyDefinition.entries.concat([
         {key: 'check', value: `'${propertyDefinition.type.qxType}'`},
         {key: 'init', value: prop.defaultValue !== undefined ? prop.defaultValue : 'null'},
         {key: 'nullable', value: prop.defaultValue === undefined},
-        {key: 'event', value: `'change${upperCase}'`}
+        {key: 'event', value: `'change${camelCaseProp}'`}
       ])
     }
     if (prop.hasOwnProperty('oneofIndex') && prop.oneofIndex !== undefined) {
@@ -271,7 +271,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     } else if (propertyDefinition.type.pbType) {
       if (list) {
         const writeMethod = propertyDefinition.type.packed ? `writePacked${propertyDefinition.type.pbType}` : `writeRepeated${propertyDefinition.type.pbType}`
-        propertyDefinition.serializer.push(`f = message.get${upperCase}().toArray()${lineEnd}
+        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}().toArray()${lineEnd}
       if (f${propertyDefinition.type.emptyComparison}) {
         writer.${writeMethod}(
           ${prop.number},
@@ -279,7 +279,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         )${lineEnd}
       }`)
       } else {
-        propertyDefinition.serializer.push(`f = message.get${upperCase}()${lineEnd}${propertyDefinition.writerTransform}
+        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}()${lineEnd}${propertyDefinition.writerTransform}
       if (f${propertyDefinition.type.emptyComparison}) {
         writer.write${propertyDefinition.type.pbType}(
           ${prop.number},
@@ -296,18 +296,18 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         if (propertyDefinition.type.packed) {
           propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.readPacked${propertyDefinition.type.pbType}()${lineEnd}
-            msg.get${upperCase}().replace(value)${lineEnd}
+            msg.get${camelCaseProp}().replace(value)${lineEnd}
             break${lineEnd}`)
         } else {
           propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
-            msg.get${upperCase}().push(value)${lineEnd}
+            msg.get${camelCaseProp}().push(value)${lineEnd}
             break${lineEnd}`)
         }
       } else {
         propertyDefinition.deserializer.push(`case ${prop.number}:
             value = reader.read${propertyDefinition.type.pbType}()${lineEnd}
-            msg.set${upperCase}(value)${lineEnd}
+            msg.set${camelCaseProp}(value)${lineEnd}
             break${lineEnd}`)
       }
     }
