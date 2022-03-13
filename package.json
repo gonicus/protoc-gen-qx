@@ -29,7 +29,7 @@
   },
   "bundleDependencies": false,
   "dependencies": {
-    "@improbable-eng/grpc-web": "^0.8.0",
+    "@improbable-eng/grpc-web": "^0.15.0",
     "eslint": "^4.19.1",
     "handlebars": "^4.7.7",
     "lodash.merge": "^4.6.2",
