@@ -17,7 +17,10 @@ module.exports = [
   },
   {
     target: 'web',
-    entry: './node_modules/google-protobuf/google-protobuf.js',
+    entry: [
+        './node_modules/google-protobuf/google-protobuf.js',
+        './node_modules/google-protobuf/google/protobuf/wrappers_pb.js'
+    ],
     output: {
       library: 'jspb',
       libraryTarget: 'var',
