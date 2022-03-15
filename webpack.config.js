@@ -13,13 +13,16 @@ module.exports = [
     },
     mode: 'production',
     plugins: [],
-    stats: 'errors-only'
+    stats: 'errors-only',
+    optimization: {
+      minimize: true
+    }
   },
   {
     target: 'web',
     entry: [
-        './node_modules/google-protobuf/google-protobuf.js',
-        './node_modules/google-protobuf/google/protobuf/wrappers_pb.js'
+      './node_modules/google-protobuf/google/protobuf/wrappers_pb.js',
+      './node_modules/google-protobuf/google-protobuf.js'
     ],
     output: {
       library: 'jspb',
@@ -27,6 +30,9 @@ module.exports = [
       filename: 'google-protobuf.js'
     },
     mode: 'production',
-    stats: 'errors-only'
+    stats: 'errors-only',
+    optimization: {
+      minimize: true
+    }
   }
 ];
