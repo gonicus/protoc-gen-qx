@@ -14,7 +14,7 @@ function camelCase(object, capFirst) {
   let ret = object.replace(/([-_][a-z])/ig, ($1) => {
     return $1.toUpperCase().replace('-', '').replace('_', '');
   });
-  if (false) {//capFirst) {
+  if (capFirst) {
     ret = ret.substr(0, 1).toUpperCase() + ret.substr(1)
   }
   return ret;

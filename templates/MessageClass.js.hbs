@@ -104,7 +104,7 @@ qx.Class.define('{{classNamespace}}', {
      * {{&.}}
     {{/each}}
      */{{/if}}
-    {{camel name}}: {
+    {{camel name false}}: {
     {{#each entries}}
       {{&key}}: {{&value}}{{#unless @last}},{{/unless}}
     {{/each}}
