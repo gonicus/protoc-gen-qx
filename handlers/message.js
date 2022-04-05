@@ -276,12 +276,10 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
       if (list) {
         const writeMethod = propertyDefinition.type.packed ? `writePacked${propertyDefinition.type.pbType}` : `writeRepeated${propertyDefinition.type.pbType}`
         propertyDefinition.serializer.push(`f = message.get${camelCaseProp}()${lineEnd}
-      if (f${propertyDefinition.type.emptyComparison}) {
         writer.${writeMethod}(
           ${prop.number},
           f
-        )${lineEnd}
-      }`)
+        )${lineEnd}`)
       } else {
         propertyDefinition.serializer.push(`f = message.get${camelCaseProp}()${lineEnd}${propertyDefinition.writerTransform}
       if (f${propertyDefinition.type.emptyComparison}) {
