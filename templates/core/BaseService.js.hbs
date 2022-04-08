@@ -184,13 +184,11 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
         }
         else {
           grpc.unary(serviceDefinition, Object.assign(config, {
-            onMessage: function (message) {
-                if (onAllMessagesCallback) {
-                  onAllMessagesCallback(message){{lineEnd}}
-                }
-            },
-
             onEnd: function (res) {
+              if (onAllMessagesCallback) {
+                onAllMessagesCallback(message){{lineEnd}}
+              }
+
               if (res.status !== grpc.Code.OK) {
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
                 if (errorHandler) {
