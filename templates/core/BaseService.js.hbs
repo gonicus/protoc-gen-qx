@@ -125,7 +125,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
       return new qx.Promise(function (resolve, reject) {
         let onAllMessagesCallback = null;
-        if ("*" in self.__postRpcHooks.keys()) {
+        if ("*" in self.__postRpcHooks) {
           onAllMessagesCallback = function (message) {
             const entry = self.__postRpcHooks["*"]{{lineEnd}}
             const callback = entry[0].bind(entry[1]){{lineEnd}}
