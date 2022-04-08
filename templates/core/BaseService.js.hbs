@@ -116,7 +116,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
         metadata: this.__metadata
         // debug: qx.core.Environment.get('qx.debug')
       }{{lineEnd}}
-      const context = this{{lineEnd}}
+      let context = this{{lineEnd}}
       const self = this{{lineEnd}}
 
       if (typeof args[args.length - 1] === 'object') {
@@ -151,8 +151,8 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           if (self.__postRpcHooks.hasOwnProperty(serviceDefinition.methodName)) {
             onMessageCallback = function (message) {
               const entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
-              const message = entry[0].call(entry[1], message){{lineEnd}}
-              callback.call(context, message){{lineEnd}}
+              const msg = entry[0].call(entry[1], message){{lineEnd}}
+              callback.call(context, msg){{lineEnd}}
             }
           }
 
