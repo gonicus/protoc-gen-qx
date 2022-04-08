@@ -89,6 +89,9 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
     __metadata: null,
     __postRpcHooks: null,
 
+    /**
+     * If rpcMethod is "*", the post RPC hook will be called on every RPC return.
+     */
     addPostRpcHook: function (rpcMethod, callback, context) {
       this.__postRpcHooks[rpcMethod] = [callback, context]{{lineEnd}}
     },
@@ -106,41 +109,62 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
     },
 
     _call: function (payload, serviceDefinition) {
-      var args = qx.lang.Array.fromArguments(arguments, 2){{lineEnd}}
-      var config = {
+      const args = qx.lang.Array.fromArguments(arguments, 2){{lineEnd}}
+      const config = {
         request: payload,
         host: this.getUrl(),
         metadata: this.__metadata
         // debug: qx.core.Environment.get('qx.debug')
       }{{lineEnd}}
-      var context = this{{lineEnd}}
-      var self = this{{lineEnd}}
+      const context = this{{lineEnd}}
+      const self = this{{lineEnd}}
+
       if (typeof args[args.length - 1] === 'object') {
         context = args.pop(){{lineEnd}}
       }
+
       return new qx.Promise(function (resolve, reject) {
+        let onAllMessagesCallback = null;
+        if ("*" in self.__postRpcHooks.keys()) {
+          onAllMessagesCallback = function (message) {
+            const entry = self.__postRpcHooks["*"]{{lineEnd}}
+            const callback = entry[0].bind(entry[1]){{lineEnd}}
+            callback(){{lineEnd}}
+          }
+        }
+
         if (serviceDefinition.responseStream === true) {
           // streaming response
-          
-          var callback{{lineEnd}}
+
+          let callback{{lineEnd}}
           if (typeof args[args.length - 1] === 'function') {
             callback = args.pop(){{lineEnd}}
           } else {
             throw Error('no callback defined'){{lineEnd}}
           }
+
           if (config.request === callback) {
             throw Error('no payload defined'){{lineEnd}}
           }
-          var onMessageCallback = callback.bind(context){{lineEnd}}
+
+          let onMessageCallback = callback.bind(context){{lineEnd}}
           if (self.__postRpcHooks.hasOwnProperty(serviceDefinition.methodName)) {
             onMessageCallback = function (message) {
-              var entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
-              message = entry[0].call(entry[1], message){{lineEnd}}
+              const entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
+              const message = entry[0].call(entry[1], message){{lineEnd}}
               callback.call(context, message){{lineEnd}}
             }
           }
+
           grpc.invoke(serviceDefinition, Object.assign(config, {
-            onMessage: onMessageCallback,
+            onMessage: function (message) {
+              onMessageCallback(message){{lineEnd}}
+
+              if (onAllMessagesCallback) {
+                onAllMessagesCallback(message){{lineEnd}}
+              }
+            },
+
             onEnd: function (code, message, trailers) {
               if (code !== grpc.Code.OK) {
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(code){{lineEnd}}
@@ -160,6 +184,12 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
         }
         else {
           grpc.unary(serviceDefinition, Object.assign(config, {
+            onMessage: function (message) {
+                if (onAllMessagesCallback) {
+                  onAllMessagesCallback(message){{lineEnd}}
+                }
+            },
+
             onEnd: function (res) {
               if (res.status !== grpc.Code.OK) {
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
@@ -175,6 +205,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
                   var entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
                   res.message = entry[0].call(entry[1], res.message){{lineEnd}}
                 }
+
                 resolve(res.message){{lineEnd}}
               }
             },
