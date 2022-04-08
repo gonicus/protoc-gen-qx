@@ -161,7 +161,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
               onMessageCallback(message){{lineEnd}}
 
               if (onAllMessagesCallback) {
-                onAllMessagesCallback(message){{lineEnd}}
+                onAllMessagesCallback(){{lineEnd}}
               }
             },
 
@@ -186,7 +186,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           grpc.unary(serviceDefinition, Object.assign(config, {
             onEnd: function (res) {
               if (onAllMessagesCallback) {
-                onAllMessagesCallback(message){{lineEnd}}
+                onAllMessagesCallback(){{lineEnd}}
               }
 
               if (res.status !== grpc.Code.OK) {
