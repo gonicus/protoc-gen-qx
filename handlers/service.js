@@ -18,14 +18,14 @@ const genServiceClass = (service, s, proto) => {
     const paramComments = [`     * @param payload {${baseNamespace}${rpc.inputType}}`]
     let callbackParams = ''
     if (rpc.serverStreaming === true) {
-      callbackParams = ', callback, context, quiet'
+      callbackParams = ', callback, quiet. context'
       paramComments.push(`     * @param {Function} callback onMessage callback`)
-      paramComments.push(`     * @param {Object} context onMessage callback context`)
       paramComments.push('     * @param {boolean} [quiet] quiet do not notify the before or after call listeners')
+      paramComments.push(`     * @param {Object} [context] onMessage callback context`)
     } else {
-      callbackParams = ', context, quiet'
-      paramComments.push(`     * @param {Object} context promise context`)
+      callbackParams = ', quiet, context'
       paramComments.push('     * @param {boolean} [quiet] do not notify the before or after call listeners')
+      paramComments.push(`     * @param {Object} [context] promise context`)
     }
     members.push(`/**
 ${normalizeComments(findCommentByPath([6, s, 2, r], proto.sourceCodeInfo.locationList), 5)}
