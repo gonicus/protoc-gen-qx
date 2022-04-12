@@ -66,7 +66,7 @@ qx.Class.define('{{classNamespace}}', {
         if (reader.isEndGroup()) {
           break{{lineEnd}}
         }
-        const value{{lineEnd}}
+        let value{{lineEnd}}
         const field = reader.getFieldNumber(){{lineEnd}}
         switch (field) {
 {{#each deserializer}}
