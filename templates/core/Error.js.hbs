@@ -16,8 +16,8 @@ qx.Class.define("proto.core.Error", {
    * @param {int} [statusCode]
    */
   construct(comment, failMessage, statusCode) {
-    this.base(comment, failMessage);
+    this.base(comment, failMessage){{lineEnd}}
 
-    this.setStatusCode(statusCode ? statusCode : null);
+    this.setStatusCode(statusCode ? statusCode : null){{lineEnd}}
   }
 });
