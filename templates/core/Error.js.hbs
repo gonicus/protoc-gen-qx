@@ -12,7 +12,7 @@ qx.Class.define("proto.core.Error", {
    * @param {String} failMessage
    * @param {int} [statusCode]
    */
-  construct(comment, failMessage, statusCode) {
+  construct(failMessage, statusCode) {
     this.base("", failMessage){{lineEnd}}
 
     this.__failMessage = failMessage{{lineEnd}}
