@@ -444,7 +444,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   }
 
   if (serializer.length) {
-    serializer[0] = `var ${serializer[0].trim()}`
+    serializer[0] = `let ${serializer[0].trim()}`
   }
 
   if (config.get('disableValidatorsInConstructor') === true) {
