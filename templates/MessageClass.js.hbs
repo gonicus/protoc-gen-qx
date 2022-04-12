@@ -46,8 +46,8 @@ qx.Class.define('{{classNamespace}}', {
      * @return {{curly true}}{{classNamespace}}{{curly}}
      */
     deserializeBinary: function (bytes) {
-      var reader = new jspb.BinaryReader(bytes){{lineEnd}}
-      var msg = new {{classNamespace}}(){{lineEnd}}
+      const reader = new jspb.BinaryReader(bytes){{lineEnd}}
+      const msg = new {{classNamespace}}(){{lineEnd}}
       return {{classNamespace}}.deserializeBinaryFromReader(msg, reader){{lineEnd}}
     },
 
@@ -66,8 +66,8 @@ qx.Class.define('{{classNamespace}}', {
         if (reader.isEndGroup()) {
           break{{lineEnd}}
         }
-        var value{{lineEnd}}
-        var field = reader.getFieldNumber(){{lineEnd}}
+        const value{{lineEnd}}
+        const field = reader.getFieldNumber(){{lineEnd}}
         switch (field) {
 {{#each deserializer}}
           {{&.}}

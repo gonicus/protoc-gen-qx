@@ -31,7 +31,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
      */
     toISOString: function (date) {
       if (date instanceof Date) {
-        var tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
+        const tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
         return (new Date(date.getTime() - tzoffset)).toISOString(){{lineEnd}}
       } else {
         return ''{{lineEnd}}
@@ -47,7 +47,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
         date = new Date(date){{lineEnd}}
       }
       if (date instanceof Date) {
-        var tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
+        const tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
         return (new Date(date.getTime() + tzoffset)){{lineEnd}}
       } else {
         return null{{lineEnd}}
@@ -88,7 +88,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
      * @returns {!Object}
      */
     toObject: function (opt_includeInstance) {
-      var obj = qx.util.Serializer.toNativeObject(this){{lineEnd}}
+      const obj = qx.util.Serializer.toNativeObject(this){{lineEnd}}
       if (opt_includeInstance === true) {
         obj.$jspbMessageInstance = this{{lineEnd}}
       }
@@ -100,7 +100,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
      * @returns {Uint8Array}
      */
     serializeBinary: function () {
-      var writer = new jspb.BinaryWriter(){{lineEnd}}
+      const writer = new jspb.BinaryWriter(){{lineEnd}}
       this.constructor.serializeBinaryToWriter(this, writer){{lineEnd}}
       return writer.getResultBuffer(){{lineEnd}}
     },
