@@ -152,14 +152,18 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
             }
           }
 
-          self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          if (!serviceDefinition.quiet) {
+            self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          }
 
           grpc.invoke(serviceDefinition, Object.assign(config, {
             onMessage: onMessageCallback,
 
             onEnd: function (code, message, trailers) {
               if (code !== grpc.Code.OK) {
-                self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+                if (!serviceDefinition.quiet) {
+                  self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+                }
 
                 const errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(code){{lineEnd}}
                 if (errorHandler) {
@@ -177,11 +181,15 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           })){{lineEnd}}
         }
         else {
-          self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          if (!serviceDefinition.quiet) {
+            self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          }
 
           grpc.unary(serviceDefinition, Object.assign(config, {
             onEnd: function (res) {
-              self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+              if (!serviceDefinition.quiet) {
+                self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+              }
 
               if (res.status !== grpc.Code.OK) {
                 const errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
