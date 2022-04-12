@@ -197,7 +197,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
                   errorHandler.callback.call(errorHandler.context, res.status, res.statusMessage){{lineEnd}}
                   reject(){{lineEnd}}
                 } else {
-                  reject(new proto.core.Error(code, 'RPC ' + serviceDefinition.methodName + ' returned an error: ' + res.statusMessage)){{lineEnd}}
+                  reject(new proto.core.Error(res.status, 'RPC ' + serviceDefinition.methodName + ' returned an error: ' + res.statusMessage)){{lineEnd}}
                 }
               }
               else {
