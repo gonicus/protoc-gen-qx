@@ -154,7 +154,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * @param value {var} value to set
      */
     set${camelCaseProp}ByKey: function (key, value) {
-      var entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
+      const entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
       if (entry) {
         entry.setValue(value);
       } else {
@@ -169,7 +169,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * @param key {String} map key
      */
     reset${camelCaseProp}ByKey: function (key) {
-      var entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
+      const entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
       if (entry) {
         this.get${camelCaseProp}().remove(entry);
       }
@@ -358,7 +358,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         this.set${firstUp}(name)${lineEnd}
       }
 
-      var oldValue = old${lineEnd}
+      const oldValue = old${lineEnd}
       // reset all other values
       Object.values(${classNamespace}.ONEOFS[${index}]).forEach(function (prop) {
         if (prop !== name) {
@@ -383,7 +383,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         this.set${firstUp}(name)${lineEnd}
       }
       
-      var oldValue = old${lineEnd}
+      const oldValue = old${lineEnd}
       // reset all other values
       ${classNamespace}.ONEOFS[${index}].forEach(function (prop) {
         if (prop !== name) {
