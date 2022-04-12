@@ -180,7 +180,7 @@ CodeGeneratorRequest()
       })
 
       files.push({
-        name: `${sourceDir}/class/${baseNamespace}/core/Error.js.hbs`,
+        name: `${sourceDir}/class/${baseNamespace}/core/Error.js`,
         content: errorClass
       })
 
