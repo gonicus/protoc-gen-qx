@@ -138,7 +138,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
             context.members.push(`/**
      * Get ${prop.name} map entry by key.
      * 
-     * @param key {String} map key
+     * @param {String} key map key
      * @returns {var|null} map value if the key exists in the map
      */
     get${camelCaseProp}ByKey: function (key) {
@@ -150,8 +150,8 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     /**
      * Set ${prop.name} map entry value by key. If the entry does not exists yet, it will be added.
      * 
-     * @param key {String} map key
-     * @param value {var} value to set
+     * @param {String} key map key
+     * @param {var} value value to set
      */
     set${camelCaseProp}ByKey: function (key, value) {
       const entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
@@ -166,7 +166,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     /**
      * Delete ${prop.name} map entry by key.
      * 
-     * @param key {String} map key
+     * @param {String} key map key
      */
     reset${camelCaseProp}ByKey: function (key) {
       const entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
@@ -333,7 +333,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     if (complexType) {
       context.members.push(`/**
      * Set value for oneOf field '${oneOf.name}'. Tries to detect the object type and call the correct setter.
-     * @param obj {var}
+     * @param {var} obj
      */
     setOneOf${firstUp}: function (obj) {
       if (${classNamespace}.ONEOFS[${index}].hasOwnProperty(obj.classname)) {

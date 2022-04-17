@@ -15,7 +15,7 @@ const genServiceClass = (service, s, proto) => {
   const members = []
 
   service.methodList.forEach((rpc, r) => {
-    const paramComments = [`     * @param payload {${baseNamespace}${rpc.inputType}}`]
+    const paramComments = [`     * @param {${baseNamespace}${rpc.inputType}} payload`]
     let callbackParams = ''
     if (rpc.serverStreaming === true) {
       callbackParams = ', callback, quiet. context'
