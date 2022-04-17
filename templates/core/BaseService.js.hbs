@@ -33,9 +33,9 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
      * Register an error handler for a specified GRPC error code.
      * The handler will be called when an GRPC-RPC response returned that code
      * like this handler(errorCode, errorMessage)
-     * @param errorCode {Number} grpc error code
-     * @param handler {Function} callback that should be executed in error case
-     * @param context {Object} context of the callback
+     * @param {Number} errorCode grpc error code
+     * @param {Function} handler callback that should be executed in error case
+     * @param {Object} context context of the callback
      */
     registerGrpcErrorHandler: function (errorCode, handler, context) {
       this.__grpcErrorHandlers[errorCode] = {
@@ -46,7 +46,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Unregister an error handler for a specified GRPC error code.
-     * @param errorCode {Number} grpc error code
+     * @param {Number} errorCode grpc error code
      */
     unregisterGrpcErrorHandler: function (errorCode) {
       delete this.__grpcErrorHandlers[errorCode]{{lineEnd}}
@@ -54,7 +54,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Get an error handler for a specified GRPC error code.
-     * @param errorCode {Number} grpc error code
+     * @param {Number} errorCode grpc error code
      * @return {Map|null}
      */
     getErrorHandler: function (errorCode) {

@@ -31,8 +31,8 @@ qx.Class.define('{{classNamespace}}', {
     /**
      * Serializes the given message to binary data (in protobuf wire
      * format), writing to the given BinaryWriter.
-     * @param message {proto.core.BaseMessage}
-     * @param writer {jspb.BinaryWriter}
+     * @param {proto.core.BaseMessage} message
+     * @param {jspb.BinaryWriter} writer
      */
     serializeBinaryToWriter: function (message, writer) {
 {{#each serializer}}
@@ -42,7 +42,7 @@ qx.Class.define('{{classNamespace}}', {
 
     /**
      * Deserializes binary data (in protobuf wire format).
-     * @param bytes {jspb.ByteSource} The bytes to deserialize.
+     * @param {jspb.ByteSource} bytes The bytes to deserialize.
      * @return {{curly true}}{{classNamespace}}{{curly}}
      */
     deserializeBinary: function (bytes) {
@@ -54,8 +54,8 @@ qx.Class.define('{{classNamespace}}', {
     /**
      * Deserializes binary data (in protobuf wire format) from the
      * given reader into the given message object.
-     * @param msg {{curly true}}{{classNamespace}}{{curly}} The message object to deserialize into.
-     * @param reader {jspb.BinaryReader} The BinaryReader to use.
+     * @param {{curly true}}{{classNamespace}}{{curly}} msg The message object to deserialize into.
+     * @param {jspb.BinaryReader} reader The BinaryReader to use.
      * @return {{curly true}}{{classNamespace}}{{curly}}
      */
     deserializeBinaryFromReader: function (msg, reader) {

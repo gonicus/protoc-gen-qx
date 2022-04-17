@@ -27,7 +27,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
   statics: {
     /**
      * Convert date from local timezone to an UTC ISO string.
-     * @param date {Date?}
+     * @param {Date?} date
      */
     toISOString: function (date) {
       if (date instanceof Date) {
@@ -40,7 +40,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
 
     /**
      * Convert from UTC ISO string to date object.
-     * @param date {String?}
+     * @param {String?} date
      */
     fromISOString: function (date) {
       if (qx.lang.Type.isString(date) && date) {
@@ -83,7 +83,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
      * To access a reserved field use, foo.pb_'name', eg, foo.pb_default.
      * For the list of reserved names please see:
      *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
-     * @param opt_includeInstance {boolean} Whether to include the JSPB instance
+     * @param {boolean} opt_includeInstance Whether to include the JSPB instance
      *     for transitional soy proto support: http://goto/soy-param-migration
      * @returns {!Object}
      */
@@ -155,7 +155,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
 
     /**
      * Transforms a proto.google.protobuf.Timestamp object to a Date object
-     * @param value {proto.google.protobuf.Timestamp}
+     * @param {proto.google.protobuf.Timestamp} value
      * @returns {Date}
      * @protected
      */
