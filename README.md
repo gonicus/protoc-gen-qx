@@ -136,7 +136,7 @@ module.exports {
   // do not end lines of generated code with ';' if true
   withoutSemi: false,
   // class to use for repeated properties
-  repeatedClass: 'Array',
+  repeatedClass: 'qx.data.Array',
   // static classes that provide property validation methods (like qx.util.Validate)
   // these classes are registered in the proto.util.ValidationFactory
   validatorClasses: [],
