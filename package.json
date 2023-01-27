@@ -34,7 +34,7 @@
     "handlebars": "^4.7.7",
     "lodash.merge": "^4.6.2",
     "protoc-plugin": "0.0.6",
-    "webpack": "^4.46.0"
+    "webpack": "^5.75.0"
   },
   "deprecated": false,
   "description": "protoc-gen-qx is a plugin for the `protoc` code generator. It creates qooxdoo class definitions from proto-files.",
