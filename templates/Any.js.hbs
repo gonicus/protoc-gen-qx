@@ -1,3 +1,4 @@
+
 /**
  * `Any` contains an arbitrary serialized protocol buffer message along with a
  * URL that describes the type of the serialized message.
@@ -94,12 +95,12 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
     /**
      * Serializes the given message to binary data (in protobuf wire
      * format), writing to the given BinaryWriter.
-     * @param {proto.core.BaseMessage} message
-     * @param {jspb.BinaryWriter} writer
+     * @param message {proto.core.BaseMessage}
+     * @param writer {jspb.BinaryWriter}
      * @suppress {unusedLocalVariables} f is only used for nested messages
      */
     serializeBinaryToWriter: function (message, writer) {
-      let f = message.getType_url(){{lineEnd}}
+      var f = message.getType_url(){{lineEnd}}
 
       if (f.length > 0) {
         writer.writeString(
@@ -107,7 +108,6 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
           f
         ){{lineEnd}}
       }
-
       f = message.getValue(){{lineEnd}}
       if (f !== 0) {
         writer.writeBytes(
@@ -119,20 +119,20 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
 
     /**
      * Deserializes binary data (in protobuf wire format).
-     * @param {jspb.ByteSource} bytes The bytes to deserialize.
+     * @param bytes {jspb.ByteSource} The bytes to deserialize.
      * @return {proto.google.protobuf.Any}
      */
     deserializeBinary: function (bytes) {
-      const reader = new jspb.BinaryReader(bytes){{lineEnd}}
-      const msg = new {{baseNamespace}}.google.protobuf.Any(){{lineEnd}}
+      var reader = new jspb.BinaryReader(bytes){{lineEnd}}
+      var msg = new {{baseNamespace}}.google.protobuf.Any(){{lineEnd}}
       return {{baseNamespace}}.google.protobuf.Any.deserializeBinaryFromReader(msg, reader){{lineEnd}}
     },
 
     /**
      * Deserializes binary data (in protobuf wire format) from the
      * given reader into the given message object.
-     * @param {proto.google.protobuf.Any} msg The message object to deserialize into.
-     * @param {jspb.BinaryReader} reader The BinaryReader to use.
+     * @param msg {proto.google.protobuf.Any} The message object to deserialize into.
+     * @param reader {jspb.BinaryReader} The BinaryReader to use.
      * @return {proto.google.protobuf.Any}
      */
     deserializeBinaryFromReader: function (msg, reader) {
@@ -141,9 +141,8 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
         if (reader.isEndGroup()) {
           break{{lineEnd}}
         }
-
-        let value{{lineEnd}}
-        const field = reader.getFieldNumber(){{lineEnd}}
+        var value{{lineEnd}}
+        var field = reader.getFieldNumber(){{lineEnd}}
         switch (field) {
           case 1:
             value = reader.readString(){{lineEnd}}

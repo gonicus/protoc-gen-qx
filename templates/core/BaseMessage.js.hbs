@@ -27,11 +27,11 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
   statics: {
     /**
      * Convert date from local timezone to an UTC ISO string.
-     * @param {Date?} date
+     * @param date {Date?}
      */
     toISOString: function (date) {
       if (date instanceof Date) {
-        const tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
+        var tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
         return (new Date(date.getTime() - tzoffset)).toISOString(){{lineEnd}}
       } else {
         return ''{{lineEnd}}
@@ -40,14 +40,14 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
 
     /**
      * Convert from UTC ISO string to date object.
-     * @param {String?} date
+     * @param date {String?}
      */
     fromISOString: function (date) {
       if (qx.lang.Type.isString(date) && date) {
         date = new Date(date){{lineEnd}}
       }
       if (date instanceof Date) {
-        const tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
+        var tzoffset = date.getTimezoneOffset() * 60000{{lineEnd}} //offset in milliseconds
         return (new Date(date.getTime() + tzoffset)){{lineEnd}}
       } else {
         return null{{lineEnd}}
@@ -83,12 +83,12 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
      * To access a reserved field use, foo.pb_'name', eg, foo.pb_default.
      * For the list of reserved names please see:
      *     com.google.apps.jspb.JsClassTemplate.JS_RESERVED_WORDS.
-     * @param {boolean} opt_includeInstance Whether to include the JSPB instance
+     * @param opt_includeInstance {boolean} Whether to include the JSPB instance
      *     for transitional soy proto support: http://goto/soy-param-migration
      * @returns {!Object}
      */
     toObject: function (opt_includeInstance) {
-      const obj = qx.util.Serializer.toNativeObject(this){{lineEnd}}
+      var obj = qx.util.Serializer.toNativeObject(this){{lineEnd}}
       if (opt_includeInstance === true) {
         obj.$jspbMessageInstance = this{{lineEnd}}
       }
@@ -100,7 +100,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
      * @returns {Uint8Array}
      */
     serializeBinary: function () {
-      const writer = new jspb.BinaryWriter(){{lineEnd}}
+      var writer = new jspb.BinaryWriter(){{lineEnd}}
       this.constructor.serializeBinaryToWriter(this, writer){{lineEnd}}
       return writer.getResultBuffer(){{lineEnd}}
     },
@@ -155,7 +155,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseMessage', {
 
     /**
      * Transforms a proto.google.protobuf.Timestamp object to a Date object
-     * @param {proto.google.protobuf.Timestamp} value
+     * @param value {proto.google.protobuf.Timestamp}
      * @returns {Date}
      * @protected
      */

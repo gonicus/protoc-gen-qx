@@ -20,16 +20,16 @@ qx.Class.define('{{baseNamespace}}.util.ValidatorFactory', {
 
     /**
      *
-     * @param {String} methodCall method call as string e.g. range(0,10)
+     * @param methodCall {String} method call as string e.g. range(0,10)
      * @returns {Function}
      */
     getValidator: function (methodCall) {
-      const call = this.__parseMethodCall(methodCall){{lineEnd}}
+      var call = this.__parseMethodCall(methodCall){{lineEnd}}
       if (qx.core.Environment.get('qx.debug')) {
         qx.core.Assert.assertNotNull(call){{lineEnd}}
       }
       for (var i = 0, l = this.__registry.length; i < l; i++) {
-        const validatorClass = this.__registry[i]{{lineEnd}}
+        var validatorClass = this.__registry[i]{{lineEnd}}
         if (validatorClass.hasOwnProperty(call.name)) {
           return validatorClass[call.name].apply(validatorClass, call.params){{lineEnd}}
         }
@@ -43,15 +43,15 @@ qx.Class.define('{{baseNamespace}}.util.ValidatorFactory', {
     },
 
     __parseMethodCall: function (methodCall) {
-      const match = this.__regex.exec(methodCall.replace(/´/g, '"')){{lineEnd}}
+      var match = this.__regex.exec(methodCall.replace(/´/g, '"')){{lineEnd}}
       if (match) {
-        const params = []
+        var params = []
         if (match[2]) {
-          const paramString = match[2]{{lineEnd}}
-          let mode = 'normal'{{lineEnd}}
-          let param = ''{{lineEnd}}
-          for (let i = 0, l = paramString.length; i < l; i++) {
-            const c = paramString[i]{{lineEnd}}
+          var paramString = match[2]{{lineEnd}}
+          var mode = 'normal'{{lineEnd}}
+          var param = ''{{lineEnd}}
+          for (var i = 0, l = paramString.length; i < l; i++) {
+            var c = paramString[i]{{lineEnd}}
             if (c === '[' && (i === 0 || paramString[i-1] !== '\\')) {
               mode = 'json'{{lineEnd}}
               param = c{{lineEnd}}

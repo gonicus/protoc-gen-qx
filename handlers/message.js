@@ -138,7 +138,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
             context.members.push(`/**
      * Get ${prop.name} map entry by key.
      * 
-     * @param {String} key map key
+     * @param key {String} map key
      * @returns {var|null} map value if the key exists in the map
      */
     get${camelCaseProp}ByKey: function (key) {
@@ -150,11 +150,11 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     /**
      * Set ${prop.name} map entry value by key. If the entry does not exists yet, it will be added.
      * 
-     * @param {String} key map key
-     * @param {var} value value to set
+     * @param key {String} map key
+     * @param value {var} value to set
      */
     set${camelCaseProp}ByKey: function (key, value) {
-      const entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
+      var entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
       if (entry) {
         entry.setValue(value);
       } else {
@@ -166,10 +166,10 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     /**
      * Delete ${prop.name} map entry by key.
      * 
-     * @param {String} key map key
+     * @param key {String} map key
      */
     reset${camelCaseProp}ByKey: function (key) {
-      const entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
+      var entry = this.get${camelCaseProp}ByKey(key)${lineEnd}
       if (entry) {
         this.get${camelCaseProp}().remove(entry);
       }
@@ -275,7 +275,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     } else if (propertyDefinition.type.pbType) {
       if (list) {
         const writeMethod = propertyDefinition.type.packed ? `writePacked${propertyDefinition.type.pbType}` : `writeRepeated${propertyDefinition.type.pbType}`
-        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}()${lineEnd}
+        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}().toArray()${lineEnd}
       if (f${propertyDefinition.type.emptyComparison}) {
         writer.${writeMethod}(
           ${prop.number},
@@ -333,7 +333,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     if (complexType) {
       context.members.push(`/**
      * Set value for oneOf field '${oneOf.name}'. Tries to detect the object type and call the correct setter.
-     * @param {var} obj
+     * @param obj {var}
      */
     setOneOf${firstUp}: function (obj) {
       if (${classNamespace}.ONEOFS[${index}].hasOwnProperty(obj.classname)) {
@@ -358,7 +358,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         this.set${firstUp}(name)${lineEnd}
       }
 
-      const oldValue = old${lineEnd}
+      var oldValue = old${lineEnd}
       // reset all other values
       Object.values(${classNamespace}.ONEOFS[${index}]).forEach(function (prop) {
         if (prop !== name) {
@@ -383,7 +383,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         this.set${firstUp}(name)${lineEnd}
       }
       
-      const oldValue = old${lineEnd}
+      var oldValue = old${lineEnd}
       // reset all other values
       ${classNamespace}.ONEOFS[${index}].forEach(function (prop) {
         if (prop !== name) {
@@ -444,7 +444,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   }
 
   if (serializer.length) {
-    serializer[0] = `let ${serializer[0].trim()}`
+    serializer[0] = `var ${serializer[0].trim()}`
   }
 
   if (config.get('disableValidatorsInConstructor') === true) {

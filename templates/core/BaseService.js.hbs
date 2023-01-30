@@ -31,11 +31,11 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Register an error handler for a specified GRPC error code.
-     * The handler will be called when an GRPC-RPC response returned that code
+     * The handler will be called when an GRPC-RPC response returned that code 
      * like this handler(errorCode, errorMessage)
-     * @param {Number} errorCode grpc error code
-     * @param {Function} handler callback that should be executed in error case
-     * @param {Object} context context of the callback
+     * @param errorCode {Number} grpc error code
+     * @param handler {Function} callback that should be executed in error case 
+     * @param context {Object} context of the callback
      */
     registerGrpcErrorHandler: function (errorCode, handler, context) {
       this.__grpcErrorHandlers[errorCode] = {
@@ -46,7 +46,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Unregister an error handler for a specified GRPC error code.
-     * @param {Number} errorCode grpc error code
+     * @param errorCode {Number} grpc error code
      */
     unregisterGrpcErrorHandler: function (errorCode) {
       delete this.__grpcErrorHandlers[errorCode]{{lineEnd}}
@@ -54,7 +54,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Get an error handler for a specified GRPC error code.
-     * @param {Number} errorCode grpc error code
+     * @param errorCode {Number} grpc error code
      * @return {Map|null}
      */
     getErrorHandler: function (errorCode) {
@@ -63,9 +63,9 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
   },
 
   /*
-  ******************************************************
+  *****************************************************************************
      EVENTS
-  ******************************************************
+  *****************************************************************************
   */
   events: {
     'beforeCall': 'qx.event.type.Data',
@@ -116,24 +116,23 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
     },
 
     _call: function (payload, serviceDefinition) {
-      const args = qx.lang.Array.fromArguments(arguments, 2){{lineEnd}}
-      const config = {
+      var args = qx.lang.Array.fromArguments(arguments, 2){{lineEnd}}
+      var config = {
         request: payload,
         host: this.getUrl(),
         metadata: this.__metadata
         // debug: qx.core.Environment.get('qx.debug')
       }{{lineEnd}}
-      let context = this{{lineEnd}}
-      const self = this{{lineEnd}}
+      var context = this{{lineEnd}}
+      var self = this{{lineEnd}}
       if (typeof args[args.length - 1] === 'object') {
         context = args.pop(){{lineEnd}}
       }
-
       return new qx.Promise(function (resolve, reject) {
         if (serviceDefinition.responseStream === true) {
           // streaming response
-
-          let callback{{lineEnd}}
+          
+          var callback{{lineEnd}}
           if (typeof args[args.length - 1] === 'function') {
             callback = args.pop(){{lineEnd}}
           } else {
@@ -142,11 +141,10 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           if (config.request === callback) {
             throw new Error('no payload defined'){{lineEnd}}
           }
-
-          let onMessageCallback = callback.bind(context){{lineEnd}}
+          var onMessageCallback = callback.bind(context){{lineEnd}}
           if (self.__postRpcHooks.hasOwnProperty(serviceDefinition.methodName)) {
             onMessageCallback = function (message) {
-              const entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
+              var entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
               message = entry[0].call(entry[1], message){{lineEnd}}
               callback.call(context, message){{lineEnd}}
             }
@@ -158,14 +156,13 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
           grpc.invoke(serviceDefinition, Object.assign(config, {
             onMessage: onMessageCallback,
-
             onEnd: function (code, message, trailers) {
               if (code !== grpc.Code.OK) {
                 if (!serviceDefinition.quiet) {
                   self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
                 }
 
-                const errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(code){{lineEnd}}
+                var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(code){{lineEnd}}
                 if (errorHandler) {
                   errorHandler.callback.call(errorHandler.context, code, message){{lineEnd}}
                   reject(){{lineEnd}}
@@ -192,7 +189,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
               }
 
               if (res.status !== grpc.Code.OK) {
-                const errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
+                var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
                 if (errorHandler) {
                   errorHandler.callback.call(errorHandler.context, res.status, res.statusMessage){{lineEnd}}
                   reject(){{lineEnd}}
@@ -202,7 +199,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
               }
               else {
                 if (self.__postRpcHooks.hasOwnProperty(serviceDefinition.methodName)) {
-                  const entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
+                  var entry = self.__postRpcHooks[serviceDefinition.methodName]{{lineEnd}}
                   res.message = entry[0].call(entry[1], res.message){{lineEnd}}
                 }
                 resolve(res.message){{lineEnd}}

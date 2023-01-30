@@ -31,8 +31,8 @@ qx.Class.define('{{classNamespace}}', {
     /**
      * Serializes the given message to binary data (in protobuf wire
      * format), writing to the given BinaryWriter.
-     * @param {proto.core.BaseMessage} message
-     * @param {jspb.BinaryWriter} writer
+     * @param message {proto.core.BaseMessage}
+     * @param writer {jspb.BinaryWriter}
      */
     serializeBinaryToWriter: function (message, writer) {
 {{#each serializer}}
@@ -42,20 +42,20 @@ qx.Class.define('{{classNamespace}}', {
 
     /**
      * Deserializes binary data (in protobuf wire format).
-     * @param {jspb.ByteSource} bytes The bytes to deserialize.
+     * @param bytes {jspb.ByteSource} The bytes to deserialize.
      * @return {{curly true}}{{classNamespace}}{{curly}}
      */
     deserializeBinary: function (bytes) {
-      const reader = new jspb.BinaryReader(bytes){{lineEnd}}
-      const msg = new {{classNamespace}}(){{lineEnd}}
+      var reader = new jspb.BinaryReader(bytes){{lineEnd}}
+      var msg = new {{classNamespace}}(){{lineEnd}}
       return {{classNamespace}}.deserializeBinaryFromReader(msg, reader){{lineEnd}}
     },
 
     /**
      * Deserializes binary data (in protobuf wire format) from the
      * given reader into the given message object.
-     * @param {{curly true}}{{classNamespace}}{{curly}} msg The message object to deserialize into.
-     * @param {jspb.BinaryReader} reader The BinaryReader to use.
+     * @param msg {{curly true}}{{classNamespace}}{{curly}} The message object to deserialize into.
+     * @param reader {jspb.BinaryReader} The BinaryReader to use.
      * @return {{curly true}}{{classNamespace}}{{curly}}
      */
     deserializeBinaryFromReader: function (msg, reader) {
@@ -66,8 +66,8 @@ qx.Class.define('{{classNamespace}}', {
         if (reader.isEndGroup()) {
           break{{lineEnd}}
         }
-        let value{{lineEnd}}
-        const field = reader.getFieldNumber(){{lineEnd}}
+        var value{{lineEnd}}
+        var field = reader.getFieldNumber(){{lineEnd}}
         switch (field) {
 {{#each deserializer}}
           {{&.}}
