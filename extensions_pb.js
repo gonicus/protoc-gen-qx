@@ -214,7 +214,7 @@ proto.QxFieldOptions.prototype.setValidate = function(value) {
 /**
  * A tuple of {field number, class constructor} for the extension
  * field named `qx`.
- * @type {!jspb.ExtensionFieldInfo.<!proto.QxFieldOptions>}
+ * @type {!jspb.ExtensionFieldInfo<!proto.QxFieldOptions>}
  */
 proto.qx = new jspb.ExtensionFieldInfo(
     100001,
