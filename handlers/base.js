@@ -3,15 +3,15 @@ const findCommentByPath = protocPlugin.findCommentByPath
 const config = require('../config')
 const baseNamespace = config.get('baseNamespace')
 
-const getClassComment = (item, s, proto, commentPos, requirements) => {
+const getClassComment = (item, s, proto, commentPos, requirements, ignores) => {
   return `
 /**
 ${normalizeComments(findCommentByPath([commentPos, s], proto.sourceCodeInfo.locationList), 1)}
  * ${item.name} class generated from protobuf definition "${proto.name}".
  * auto-generated code PLEASE DO NOT EDIT!
  *
- * @ignore(grpc, jspb, proto.google.protobuf)
  * ${requirements ? '\n * ' + requirements.join('\n * ') : ''}
+ * ${ignores ? ignores.join('\n * ') : ''}
  */`
 }
 

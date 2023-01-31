@@ -100,20 +100,20 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
      * @suppress {unusedLocalVariables} f is only used for nested messages
      */
     serializeBinaryToWriter: function (message, writer) {
-      var f = message.getType_url()
+      var f = message.getType_url(){{lineEnd}}
 
       if (f.length > 0) {
         writer.writeString(
           1,
           f
-        )
+        ){{lineEnd}}
       }
-      f = message.getValue()
+      f = message.getValue(){{lineEnd}}
       if (f !== 0) {
         writer.writeBytes(
           2,
           f.serializeBinary()
-        )
+        ){{lineEnd}}
       }
     },
 
@@ -123,9 +123,9 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
      * @return {proto.google.protobuf.Any}
      */
     deserializeBinary: function (bytes) {
-      var reader = new jspb.BinaryReader(bytes)
-      var msg = new {{baseNamespace}}.google.protobuf.Any()
-      return {{baseNamespace}}.google.protobuf.Any.deserializeBinaryFromReader(msg, reader)
+      var reader = new jspb.BinaryReader(bytes){{lineEnd}}
+      var msg = new {{baseNamespace}}.google.protobuf.Any(){{lineEnd}}
+      return {{baseNamespace}}.google.protobuf.Any.deserializeBinaryFromReader(msg, reader){{lineEnd}}
     },
 
     /**
@@ -136,28 +136,28 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
      * @return {proto.google.protobuf.Any}
      */
     deserializeBinaryFromReader: function (msg, reader) {
-      msg.setDeserialized(true)
+      msg.setDeserialized(true){{lineEnd}}
       while (reader.nextField()) {
         if (reader.isEndGroup()) {
-          break
+          break{{lineEnd}}
         }
-        var value
-        var field = reader.getFieldNumber()
+        var value{{lineEnd}}
+        var field = reader.getFieldNumber(){{lineEnd}}
         switch (field) {
           case 1:
-            value = reader.readString()
-            msg.setType_url(value)
-            break
+            value = reader.readString(){{lineEnd}}
+            msg.setType_url(value){{lineEnd}}
+            break{{lineEnd}}
           case 2:
-            value = reader.readBytes()
-            msg.setValue(value)
-            break
+            value = reader.readBytes(){{lineEnd}}
+            msg.setValue(value){{lineEnd}}
+            break{{lineEnd}}
           default:
-            reader.skipField()
-            break
+            reader.skipField(){{lineEnd}}
+            break{{lineEnd}}
         }
       }
-      return msg
+      return msg{{lineEnd}}
     }
   },
 
@@ -193,14 +193,14 @@ qx.Class.define('{{baseNamespace}}.google.protobuf.Any', {
     __valueClazz: null,
 
     _applyType_url: function (value) {
-      this.__valueClazz = qx.Class.getByName(value.split('/').pop())
+      this.__valueClazz = qx.Class.getByName(value.split('/').pop()){{lineEnd}}
     },
 
     _transformAny: function (value) {
       if (this.__valueClazz && !(value instanceof this.__valueClazz)) {
-        return this.__valueClazz.deserializeBinary(value)
+        return this.__valueClazz.deserializeBinary(value){{lineEnd}}
       } else {
-        return value
+        return value{{lineEnd}}
       }
     }
   }

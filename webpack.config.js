@@ -13,7 +13,10 @@ module.exports = [
     },
     mode: 'production',
     plugins: [],
-    stats: 'errors-only'
+    stats: 'errors-only',
+    optimization: {
+      minimize: true
+    }
   },
   {
     target: 'web',
@@ -24,6 +27,9 @@ module.exports = [
       filename: 'google-protobuf.js'
     },
     mode: 'production',
-    stats: 'errors-only'
+    stats: 'errors-only',
+    optimization: {
+      minimize: true
+    }
   }
 ];

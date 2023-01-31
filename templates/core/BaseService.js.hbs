@@ -31,10 +31,10 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Register an error handler for a specified GRPC error code.
-     * The handler will be called when an GRPC-RPC response returned that code 
+     * The handler will be called when an GRPC-RPC response returned that code
      * like this handler(errorCode, errorMessage)
      * @param errorCode {Number} grpc error code
-     * @param handler {Function} callback that should be executed in error case 
+     * @param handler {Function} callback that should be executed in error case
      * @param context {Object} context of the callback
      */
     registerGrpcErrorHandler: function (errorCode, handler, context) {
@@ -60,6 +60,16 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
     getErrorHandler: function (errorCode) {
       return this.__grpcErrorHandlers[errorCode]{{lineEnd}}
     }
+  },
+
+  /*
+  *****************************************************************************
+     EVENTS
+  *****************************************************************************
+  */
+  events: {
+    'beforeCall': 'qx.event.type.Data',
+    'afterCall': 'qx.event.type.Data'
   },
 
   /*
@@ -121,15 +131,15 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
       return new qx.Promise(function (resolve, reject) {
         if (serviceDefinition.responseStream === true) {
           // streaming response
-          
+
           var callback{{lineEnd}}
           if (typeof args[args.length - 1] === 'function') {
             callback = args.pop(){{lineEnd}}
           } else {
-            throw Error('no callback defined'){{lineEnd}}
+            throw new Error('no callback defined'){{lineEnd}}
           }
           if (config.request === callback) {
-            throw Error('no payload defined'){{lineEnd}}
+            throw new Error('no payload defined'){{lineEnd}}
           }
           var onMessageCallback = callback.bind(context){{lineEnd}}
           if (self.__postRpcHooks.hasOwnProperty(serviceDefinition.methodName)) {
@@ -139,16 +149,25 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
               callback.call(context, message){{lineEnd}}
             }
           }
+
+          if (!serviceDefinition.quiet) {
+            self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          }
+
           grpc.invoke(serviceDefinition, Object.assign(config, {
             onMessage: onMessageCallback,
             onEnd: function (code, message, trailers) {
               if (code !== grpc.Code.OK) {
+                if (!serviceDefinition.quiet) {
+                  self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+                }
+
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(code){{lineEnd}}
                 if (errorHandler) {
                   errorHandler.callback.call(errorHandler.context, code, message){{lineEnd}}
                   reject(){{lineEnd}}
                 } else {
-                  reject(new Error(message)){{lineEnd}}
+                  reject(new proto.core.Error(message, code)){{lineEnd}}
                 }
               }
               else {
@@ -159,15 +178,23 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           })){{lineEnd}}
         }
         else {
+          if (!serviceDefinition.quiet) {
+            self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          }
+
           grpc.unary(serviceDefinition, Object.assign(config, {
             onEnd: function (res) {
+              if (!serviceDefinition.quiet) {
+                self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+              }
+
               if (res.status !== grpc.Code.OK) {
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
                 if (errorHandler) {
                   errorHandler.callback.call(errorHandler.context, res.status, res.statusMessage){{lineEnd}}
                   reject(){{lineEnd}}
                 } else {
-                  reject(new Error('RPC ' + serviceDefinition.methodName + ' returned an error: ' + res.statusMessage)){{lineEnd}}
+                  reject(new proto.core.Error(res.statusMessage, res.status)){{lineEnd}}
                 }
               }
               else {
