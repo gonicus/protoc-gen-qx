@@ -174,6 +174,16 @@ CodeGeneratorRequest()
         content: baseMessageClass
       })
 
+      template = handlebars.compile(fs.readFileSync(path.join(__dirname, 'templates', 'core', 'Error.js.hbs'), 'utf8'))
+      let errorClass = template({
+        lineEnd: lineEnd
+      })
+
+      files.push({
+        name: `${sourceDir}/class/${baseNamespace}/core/Error.js`,
+        content: errorClass
+      })
+
       if (config.get('validatorClasses').length) {
         template = handlebars.compile(fs.readFileSync(path.join(__dirname, 'templates', 'core', 'ValidatorFactory.js.hbs'), 'utf8'))
         let validatorFactoryClass = template({

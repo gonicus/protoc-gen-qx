@@ -1,0 +1,31 @@
+qx.Class.define("proto.core.Error", {
+  extend: qx.type.BaseError,
+
+  properties: {
+    statusCode: {
+      init:     null,
+      nullable: true
+    }
+  },
+
+  /**
+   * @param failMessage {String}
+   * @param statusCode {int}
+   */
+  construct(failMessage, statusCode) {
+    this.base("", failMessage){{lineEnd}}
+
+    this.__failMessage = failMessage{{lineEnd}}
+    this.setStatusCode(statusCode ? statusCode : null){{lineEnd}}
+  },
+
+  members: {
+    toString() {
+      if (this.getStatusCode() !== null) {
+        return `${this.__failMessage} (code ${this.getStatusCode()})`;
+      } else {
+        return this.__failMessage;
+      }
+    }
+  }
+});

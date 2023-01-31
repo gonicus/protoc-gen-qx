@@ -64,6 +64,16 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
   /*
   *****************************************************************************
+     EVENTS
+  *****************************************************************************
+  */
+  events: {
+    'beforeCall': 'qx.event.type.Data',
+    'afterCall': 'qx.event.type.Data'
+  },
+
+  /*
+  *****************************************************************************
      PROPERTIES
   *****************************************************************************
   */
@@ -126,10 +136,10 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           if (typeof args[args.length - 1] === 'function') {
             callback = args.pop(){{lineEnd}}
           } else {
-            throw Error('no callback defined'){{lineEnd}}
+            throw new Error('no callback defined'){{lineEnd}}
           }
           if (config.request === callback) {
-            throw Error('no payload defined'){{lineEnd}}
+            throw new Error('no payload defined'){{lineEnd}}
           }
           var onMessageCallback = callback.bind(context){{lineEnd}}
           if (self.__postRpcHooks.hasOwnProperty(serviceDefinition.methodName)) {
@@ -139,16 +149,25 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
               callback.call(context, message){{lineEnd}}
             }
           }
+
+          if (!serviceDefinition.quiet) {
+            self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          }
+
           grpc.invoke(serviceDefinition, Object.assign(config, {
             onMessage: onMessageCallback,
             onEnd: function (code, message, trailers) {
               if (code !== grpc.Code.OK) {
+                if (!serviceDefinition.quiet) {
+                  self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+                }
+
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(code){{lineEnd}}
                 if (errorHandler) {
                   errorHandler.callback.call(errorHandler.context, code, message){{lineEnd}}
                   reject(){{lineEnd}}
                 } else {
-                  reject(new Error(message)){{lineEnd}}
+                  reject(new proto.core.Error(message, code)){{lineEnd}}
                 }
               }
               else {
@@ -159,15 +178,23 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
           })){{lineEnd}}
         }
         else {
+          if (!serviceDefinition.quiet) {
+            self.fireDataEvent('beforeCall', serviceDefinition){{lineEnd}}
+          }
+
           grpc.unary(serviceDefinition, Object.assign(config, {
             onEnd: function (res) {
+              if (!serviceDefinition.quiet) {
+                self.fireDataEvent('afterCall', serviceDefinition){{lineEnd}}
+              }
+
               if (res.status !== grpc.Code.OK) {
                 var errorHandler = {{baseNamespace}}.core.BaseService.getErrorHandler(res.status){{lineEnd}}
                 if (errorHandler) {
                   errorHandler.callback.call(errorHandler.context, res.status, res.statusMessage){{lineEnd}}
                   reject(){{lineEnd}}
                 } else {
-                  reject(new Error('RPC ' + serviceDefinition.methodName + ' returned an error: ' + res.statusMessage)){{lineEnd}}
+                  reject(new proto.core.Error(res.statusMessage, res.status)){{lineEnd}}
                 }
               }
               else {
