@@ -31,10 +31,10 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
 
     /**
      * Register an error handler for a specified GRPC error code.
-     * The handler will be called when an GRPC-RPC response returned that code 
+     * The handler will be called when an GRPC-RPC response returned that code
      * like this handler(errorCode, errorMessage)
      * @param errorCode {Number} grpc error code
-     * @param handler {Function} callback that should be executed in error case 
+     * @param handler {Function} callback that should be executed in error case
      * @param context {Object} context of the callback
      */
     registerGrpcErrorHandler: function (errorCode, handler, context) {
@@ -131,7 +131,7 @@ qx.Class.define('{{baseNamespace}}.core.BaseService', {
       return new qx.Promise(function (resolve, reject) {
         if (serviceDefinition.responseStream === true) {
           // streaming response
-          
+
           var callback{{lineEnd}}
           if (typeof args[args.length - 1] === 'function') {
             callback = args.pop(){{lineEnd}}

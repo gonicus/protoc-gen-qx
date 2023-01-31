@@ -67,7 +67,7 @@ CodeGeneratorRequest()
         parameters[key] = value
       })
     }
-    
+
     const protos = req.protoFileList.filter(p => req.fileToGenerateList.indexOf(p.name) !== -1)
     const skipDeps = config.get('skipDeps')
     let external = [
@@ -128,7 +128,7 @@ CodeGeneratorRequest()
               return whitelist[proto.name].indexOf(item.name) >= 0
             })
           }
-        
+
           items.forEach((item, s) => {
             handlers[propName](item, s, proto).forEach(entry => {
               files.push({
@@ -159,7 +159,7 @@ CodeGeneratorRequest()
         var dynLoader = new qx.util.DynamicScriptLoader([
           qx.util.ResourceManager.getInstance().toUri(${externalResources.join('),\n      qx.util.ResourceManager.getInstance().toUri(')})
         ]);
-    
+
         qx.bom.Lifecycle.onReady(function () {
           dynLoader.start().catch(function (err) {
             qx.log.Logger.error(statics, 'failed to load scripts', err);
@@ -196,6 +196,20 @@ CodeGeneratorRequest()
           content: validatorFactoryClass
         })
       }
+    }
+
+    if (!config.get('skipCoreFiles')) {
+      template = handlebars.compile(fs.readFileSync(path.join(__dirname, 'templates', 'core', 'BaseError.js.hbs'), 'utf8'))
+
+      let baseErrorClass = template({
+        baseNamespace: baseNamespace,
+        lineEnd: lineEnd,
+      })
+
+      files.push({
+        name: `${sourceDir}/class/${baseNamespace}/core/BaseError.js`,
+        content: baseErrorClass
+      })
     }
 
     if (parameters.skipDeps !== true) {
