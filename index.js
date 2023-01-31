@@ -2,8 +2,7 @@
 
 /* eslint-env es6, node */
 const webpack = require('webpack')
-const MemoryFileSystem = require('memory-fs')
-const memoryFs = new MemoryFileSystem();
+const MemoryFileSystem = require('memfs')
 const fs = require('fs')
 const path = require('path')
 const config = require('./config')
@@ -222,7 +221,7 @@ CodeGeneratorRequest()
         }
         config.output.path = '/build'
         compiler = webpack(config)
-        compiler.outputFileSystem = memoryFs
+        compiler.outputFileSystem = MemoryFileSystem.fs
 
         promises.push(new Promise((resolve, reject) => {
           compiler.run((err, stats) => {
