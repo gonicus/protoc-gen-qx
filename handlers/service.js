@@ -20,11 +20,11 @@ const genServiceClass = (service, s, proto) => {
     if (rpc.serverStreaming === true) {
       callbackParams = ', callback, quiet, context'
       paramComments.push(`     * @param callback {Function} onMessage callback`)
-      paramComments.push('     * @param [quiet] {boolean} quiet do not notify the before or after call listeners')
+      paramComments.push('     * @param quiet {boolean} quiet do not notify the before or after call listeners')
       paramComments.push(`     * @param context {Object} onMessage callback context`)
     } else {
       callbackParams = ', context, quiet'
-      paramComments.push('     * @param [quiet] {boolean} do not notify the before or after call listeners')
+      paramComments.push('     * @param quiet {boolean} do not notify the before or after call listeners')
       paramComments.push(`     * @param context {Object} promise context`)
     }
     members.push(`/**
