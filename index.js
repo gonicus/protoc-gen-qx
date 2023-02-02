@@ -5,6 +5,7 @@ const webpack = require('webpack')
 const MemoryFileSystem = require('memfs')
 const fs = require('fs')
 const path = require('path')
+const mkdirp = require("mkdirp")
 const config = require('./config')
 const {CodeGeneratorRequest, CodeGeneratorResponse, CodeGeneratorResponseError} = require('protoc-plugin')
 const baseNamespace = config.get('baseNamespace')
@@ -45,6 +46,7 @@ if (sourceDir && !sourceDir.endsWith('/')) {
 // register option handlers
 const optionHandler = require('./handlers/options/index')
 let {name, handler} = require('./handlers/options/qx')
+const { getSystemErrorMap } = require('util')
 optionHandler.registerHandler(name, handler)
 config.get('optionHandlers').forEach(handlerPath => {
   let {name, handler} = require(path.normalize(path.join(process.cwd() + '/' + handlerPath)))
@@ -222,6 +224,7 @@ CodeGeneratorRequest()
         config.output.path = '/build'
         compiler = webpack(config)
         compiler.outputFileSystem = MemoryFileSystem.fs
+        compiler.outputFileSystem.join = path.join;
 
         promises.push(new Promise((resolve, reject) => {
           compiler.run((err, stats) => {
