@@ -1,26 +1,4 @@
 {
-  "_from": "git+ssh://git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git",
-  "_id": "protoc-gen-qx@0.1.0",
-  "_inBundle": false,
-  "_integrity": "",
-  "_location": "/protoc-gen-qx",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "git",
-    "raw": "protoc-gen-qx@git+ssh://git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git",
-    "name": "protoc-gen-qx",
-    "escapedName": "protoc-gen-qx",
-    "rawSpec": "git+ssh://git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git",
-    "saveSpec": "git+ssh://git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git",
-    "fetchSpec": "git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git",
-    "gitCommittish": null
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "git+ssh://git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git#3803416d99401d3fa7a69fd88b0bfdf1946fa55d",
-  "_spec": "protoc-gen-qx@git+ssh://git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git",
-  "_where": "/home/tobiasb/develop/viatraffic/frontend",
   "author": {
     "name": "Gonicus GmbH"
   },
@@ -33,8 +11,9 @@
     "eslint": "^8.32.0",
     "handlebars": "^4.7.7",
     "lodash.merge": "^4.6.2",
+    "memfs": "^3.4.13",
     "protoc-plugin": "0.0.6",
-    "webpack": "^5.75.0"
+    "webpack": "^4.46.0"
   },
   "deprecated": false,
   "description": "protoc-gen-qx is a plugin for the `protoc` code generator. It creates qooxdoo class definitions from proto-files.",
@@ -48,7 +27,7 @@
   "name": "protoc-gen-qx",
   "repository": {
     "type": "git",
-    "url": "git@gitlab.intranet.gonicus.de:viatraffic/protoc-gen-qx.git"
+    "url": "https://github.com/gonicus/protoc-gen-qx.git"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

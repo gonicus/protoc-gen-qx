@@ -1,4 +1,11 @@
 module.exports = {
+  1: {
+    qxType: 'Number',
+    pbType: 'Double',
+    emptyComparison: ' !== 0',
+    defaultValue: 0,
+    packed: true
+  },
   2: {
     qxType: 'Number',
     pbType: 'Float',
@@ -32,8 +39,17 @@ module.exports = {
     packed: true
   },
   6: {
+    qxType: 'String',
+    pbType: 'Fixed64String',
+    transform: '_toString',
+    emptyComparison: '.length > 0',
+    defaultValue: '\'\'',
+    writerTransform: `f = f.startsWith('0x') ? '' + parseInt(f, 16) : f`,
+    packed: true
+  },
+  7: {
     qxType: 'Number',
-    pbType: 'Double',
+    pbType: 'Fixed32',
     emptyComparison: ' !== 0',
     defaultValue: 0,
     packed: true
