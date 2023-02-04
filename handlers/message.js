@@ -43,8 +43,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   const context = {
     requirements: [],
     ignores: [
-      'proto.google.protobuf',
-      'jspb'
+      '@ignore(jspb, proto.google.protobuf)'
     ],
     includes: config.getIncludes('messageType', classNamespace).slice(),
     implements: config.getImplements('messageType', classNamespace).slice(),
