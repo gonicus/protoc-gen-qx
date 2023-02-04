@@ -109,7 +109,7 @@ in the folder where you run your code generation from.
 The default config looks like this:
 
 ```javascript
-module.exports {
+module.exports = {
   baseNamespace: 'proto',
   messageType: {
     '*': {
@@ -148,7 +148,7 @@ module.exports {
 If you want to include a certain mixin in a messageType class you can use this config:
 
 ```javascript
-module.exports {
+module.exports = {
   messageType: {
     'proto.api.MyMessage': {
       // relative to baseNamespace (starting with .)
@@ -161,7 +161,7 @@ module.exports {
 You can also use regular expression as class selectors:
 
 ```javascript
-module.exports {
+module.exports = {
   messageType: {
     '/proto.api.(MyMessage|MyOtherMessage)/': {
       // relative to baseNamespace (starting with .)
