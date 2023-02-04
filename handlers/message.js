@@ -42,7 +42,9 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   // all the information needed to generate the code
   const context = {
     requirements: [],
-    ignores: [],
+    ignores: [
+      'google.protobuf'
+    ],
     includes: config.getIncludes('messageType', classNamespace).slice(),
     implements: config.getImplements('messageType', classNamespace).slice(),
     constructor: [],
@@ -189,8 +191,6 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         } else if (prop.typeName === '.google.protobuf.Any') {
           // add requirement
           context.requirements.push(`@require(${baseNamespace}${prop.typeName})`)
-          // add ignores
-          context.ignores.push(`@ignore(${baseNamespace}${prop.typeName}.*)`)
         }
         propertyDefinition.type = {
           qxType: `${qxType}`,
