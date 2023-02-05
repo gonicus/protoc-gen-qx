@@ -22,6 +22,7 @@ function camelCase(object, capFirst) {
 handlebars.registerHelper('camel', camelCase);
 const {setPropEntry} = require('../utils')
 const arrayClass = config.get('repeatedClass')
+const repeatedClassTransform = config.get('repeatedClassTransform')
 const optionHandler = require('./options/index')
 
 const genTypeClass = (messageType, s, proto, relNamespace) => {
