@@ -145,7 +145,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * @returns {var|null} map value if the key exists in the map
      */
     get${camelCaseProp}ByKey: function (key) {
-      return this.get${camelCaseProp}().toArray().find(function (mapEntry) {
+      return this.get${camelCaseProp}()${repeatedClassTransform}.find(function (mapEntry) {
         return mapEntry.getKey() === key${lineEnd}
       }, this)${lineEnd}
     },
@@ -203,7 +203,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
             reader.readMessage(value, ${baseNamespace}${prop.typeName}.deserializeBinaryFromReader)${lineEnd}
             msg.set${camelCaseProp}(value)${lineEnd}
             break${lineEnd}`,
-          writerCode: list ? `f = message.get${camelCaseProp}().toArray()${lineEnd}
+          writerCode: list ? `f = message.get${camelCaseProp}()${repeatedClassTransform}${lineEnd}
       if (f != null) {
         writer.writeRepeatedMessage(
           ${prop.number},
@@ -278,7 +278,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     } else if (propertyDefinition.type.pbType) {
       if (list) {
         const writeMethod = propertyDefinition.type.packed ? `writePacked${propertyDefinition.type.pbType}` : `writeRepeated${propertyDefinition.type.pbType}`
-        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}().toArray()${lineEnd}
+        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}()${repeatedClassTransform}${lineEnd}
       if (f${propertyDefinition.type.emptyComparison}) {
         writer.${writeMethod}(
           ${prop.number},
