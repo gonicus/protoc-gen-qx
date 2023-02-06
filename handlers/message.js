@@ -22,6 +22,7 @@ function camelCase(object, capFirst) {
 handlebars.registerHelper('camel', camelCase);
 const {setPropEntry} = require('../utils')
 const arrayClass = config.get('repeatedClass')
+const repeatedClassTransform = config.get('repeatedClassTransform')
 const optionHandler = require('./options/index')
 
 const genTypeClass = (messageType, s, proto, relNamespace) => {
@@ -42,7 +43,9 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
   // all the information needed to generate the code
   const context = {
     requirements: [],
-    ignores: [],
+    ignores: [
+      '@ignore(jspb, proto.google.protobuf)'
+    ],
     includes: config.getIncludes('messageType', classNamespace).slice(),
     implements: config.getImplements('messageType', classNamespace).slice(),
     constructor: [],
@@ -143,7 +146,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
      * @returns {var|null} map value if the key exists in the map
      */
     get${camelCaseProp}ByKey: function (key) {
-      return this.get${camelCaseProp}().toArray().find(function (mapEntry) {
+      return this.get${camelCaseProp}()${repeatedClassTransform}.find(function (mapEntry) {
         return mapEntry.getKey() === key${lineEnd}
       }, this)${lineEnd}
     },
@@ -189,8 +192,6 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
         } else if (prop.typeName === '.google.protobuf.Any') {
           // add requirement
           context.requirements.push(`@require(${baseNamespace}${prop.typeName})`)
-          // add ignores
-          context.ignores.push(`@ignore(${baseNamespace}${prop.typeName}.*)`)
         }
         propertyDefinition.type = {
           qxType: `${qxType}`,
@@ -203,7 +204,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
             reader.readMessage(value, ${baseNamespace}${prop.typeName}.deserializeBinaryFromReader)${lineEnd}
             msg.set${camelCaseProp}(value)${lineEnd}
             break${lineEnd}`,
-          writerCode: list ? `f = message.get${camelCaseProp}().toArray()${lineEnd}
+          writerCode: list ? `f = message.get${camelCaseProp}()${repeatedClassTransform}${lineEnd}
       if (f != null) {
         writer.writeRepeatedMessage(
           ${prop.number},
@@ -278,7 +279,7 @@ const genTypeClass = (messageType, s, proto, relNamespace) => {
     } else if (propertyDefinition.type.pbType) {
       if (list) {
         const writeMethod = propertyDefinition.type.packed ? `writePacked${propertyDefinition.type.pbType}` : `writeRepeated${propertyDefinition.type.pbType}`
-        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}().toArray()${lineEnd}
+        propertyDefinition.serializer.push(`f = message.get${camelCaseProp}()${repeatedClassTransform}${lineEnd}
       if (f${propertyDefinition.type.emptyComparison}) {
         writer.${writeMethod}(
           ${prop.number},

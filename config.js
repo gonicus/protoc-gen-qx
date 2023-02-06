@@ -33,6 +33,8 @@ const defaultConfig = {
   withoutSemi: false,
   // class to use for repeated properties
   repeatedClass: 'qx.data.Array',
+  // code to append to any repeatedClass reference to transform it into a plain array, if necessary (leave empty if no transform is necessary)
+  repeatedClassTransform: '.toArray()',
   // static classes that provide property validation methods (like qx.util.Validate)
   // these classes are registered in the proto.util.ValidationFactory
   validatorClasses: [],

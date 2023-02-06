@@ -109,7 +109,7 @@ in the folder where you run your code generation from.
 The default config looks like this:
 
 ```javascript
-module.exports {
+module.exports = {
   baseNamespace: 'proto',
   messageType: {
     '*': {
@@ -137,6 +137,8 @@ module.exports {
   withoutSemi: false,
   // class to use for repeated properties
   repeatedClass: 'qx.data.Array',
+  // code to append to any repeatedClass reference to transform it into a plain array, if necessary (leave empty if no transform is necessary)
+  repeatedClassTransform: '.toArray()',
   // static classes that provide property validation methods (like qx.util.Validate)
   // these classes are registered in the proto.util.ValidationFactory
   validatorClasses: [],
@@ -148,7 +150,7 @@ module.exports {
 If you want to include a certain mixin in a messageType class you can use this config:
 
 ```javascript
-module.exports {
+module.exports = {
   messageType: {
     'proto.api.MyMessage': {
       // relative to baseNamespace (starting with .)
@@ -161,7 +163,7 @@ module.exports {
 You can also use regular expression as class selectors:
 
 ```javascript
-module.exports {
+module.exports = {
   messageType: {
     '/proto.api.(MyMessage|MyOtherMessage)/': {
       // relative to baseNamespace (starting with .)
